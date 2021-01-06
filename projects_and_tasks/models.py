@@ -38,4 +38,4 @@ class Task(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.PROTECT)
-    projects = models.ManyToManyField(Project, related_name='users')
+    projects = models.ManyToManyField(Project, related_name='users_profiles')

@@ -10,7 +10,10 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    pass
+    fieldsets = (None, {
+        'fields': ('project', 'name', 'description', 'deadline')
+    }),
+
 
 
 @admin.register(UserProfile)

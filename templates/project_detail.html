@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <p class="lead">
+        name: {{ object.name }}
+        <br>
+        description {{ object.description }}
+    </p>
+
+    <button type="button" class="btn btn-success">Edit</button>
+{% endblock %}
