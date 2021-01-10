@@ -21,7 +21,7 @@
 <header>
     <h1 class="logo d-none d-md-block">Projects and Tasks</h1>
 
-    <a href="{% url 'logout'%}">logout</a>
+    <a href="{% url 'logout' %}">logout</a>
     {% block navbar %}
         <nav class="navbar navbar-light bg-success navbar-expand-md">
             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -31,21 +31,17 @@
 
             <div class="collapse navbar-collapse" id="mainmenu">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'project_list' %}">Projects</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button"
-                           data-toggle="dropdown">Tasks</a>
-                        <div class="dropdown-menu bg-success">
-                            <a class="dropdown-item" href="#">task 1</a>
-                            <a class="dropdown-item" href="#">task 2</a>
-                            <a class="dropdown-item" href="#">task 3</a>
-                        </div>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Calendar</a>
-                    </li>
+                    {% block navbar_items %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'project_list' %}">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'task_list' %}">Tasks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Calendar</a>
+                        </li>
+                    {% endblock %}
                 </ul>
             </div>
         </nav>

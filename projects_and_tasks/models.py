@@ -5,18 +5,23 @@ from django_enumfield import enum
 from projects_and_tasks.enums import TaskStatus
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.PROTECT)
+
+
 class Project(models.Model):
     name = models.CharField(max_length=256)
     description = models.TextField(null=True, blank=True)
     code = models.CharField(max_length=16)
     task_counter = models.IntegerField(default=0)
+    owner = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='projects')
 
     def __str__(self):
         return self.name
 
 
 class Task(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='tasks')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
     name = models.CharField(max_length=256)
     description = models.TextField(null=True, blank=True)
     number = models.IntegerField(auto_created=True)
@@ -35,7 +40,3 @@ class Task(models.Model):
             project.save()
         super().save(*args, **kwargs)
 
-
-class UserProfile(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.PROTECT)
-    projects = models.ManyToManyField(Project, related_name='users_profiles')

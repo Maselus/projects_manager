@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "project/project_base.html" %}
 
 {% block content %}
-    <button type="button" class="btn btn-success">Add project</button>
+    <a class="btn btn-success" href="{% url 'project_create' %}" role="button">Add project</a>
     <ul class="list-group">
         {% for project in object_list %}
             <a href="{% url 'project_detail' project.pk %}" class="list-group-item list-group-item-action bg-success">
                 {{ project.name }}
             </a>
         {% empty %}
-            <li>No projects yet.</li>
+            <li>No projects  yet.</li>
         {% endfor %}
 
     </ul>

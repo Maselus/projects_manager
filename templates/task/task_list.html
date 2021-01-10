@@ -1,0 +1,15 @@
+{% extends "task/task_base.html" %}
+
+{% block content %}
+    <a class="btn btn-success" href="{% url 'task_create' %}" role="button">Add task</a>
+    <ul class="list-group">
+        {% for task in object_list %}
+            <a href="{% url 'task_detail' task.pk %}" class="list-group-item list-group-item-action bg-success">
+                {{ task }} <b>{{ task.name }}</b>
+            </a>
+        {% empty %}
+            <li>No projects yet.</li>
+        {% endfor %}
+
+    </ul>
+{% endblock %}

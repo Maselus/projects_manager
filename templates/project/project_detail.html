@@ -1,0 +1,15 @@
+{% extends "project/project_base.html" %}
+
+{% block content %}
+
+    <p class="lead">
+        name: {{ object.name }}
+        <br>
+        description: {{ object.description }}
+    </p>
+
+    <a class="btn btn-success" href="{% url 'project_update' pk=object.id %}" role="button">Edit</a>
+    <form method="post" action="{% url 'project_delete' object.id %}"> {% csrf_token %}
+        <input type="submit" value="Delete" class="btn btn-success">
+    </form>
+{% endblock %}

@@ -15,7 +15,16 @@ class TaskAdmin(admin.ModelAdmin):
     }),
 
 
+class ProjectInline(admin.StackedInline):
+    model = Project
+    extra = 0
+
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    pass
+    fieldsets = (None, {
+        'fields': ('user', )
+    }),
+    inlines = [
+        ProjectInline,
+    ]
