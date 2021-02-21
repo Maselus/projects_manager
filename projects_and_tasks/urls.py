@@ -2,7 +2,7 @@ from django.urls import path
 
 from projects_and_tasks.views import HomeView, ProjectListView, ProjectDetailView, TaskListView, \
     TaskDetailView, ProjectCreateView, TaskCreateView, ProjectDeleteView, TaskDeleteView, \
-    ProjectUpdateView, TaskUpdateView
+    ProjectUpdateView, TaskUpdateView, CalendarView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -20,4 +20,7 @@ urlpatterns = [
     path('tasks/create/', TaskCreateView.as_view(), name='task_create'),
     path('tasks/update/<int:pk>/', TaskUpdateView.as_view(), name='task_update'),
     path('tasks/delete/<int:pk>/', TaskDeleteView.as_view(), name='task_delete'),
+
+    # calendar
+    path('calendar/', CalendarView.as_view(), name='calendar'),
 ]

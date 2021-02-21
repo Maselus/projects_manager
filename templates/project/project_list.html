@@ -1,14 +1,56 @@
 {% extends "project/project_base.html" %}
 
 {% block content %}
-    <a class="btn btn-success" href="{% url 'project_create' %}" role="button">Add project</a>
+
+    <div class="row">
+        <div class="col">
+            <h2 class="logo d-none d-md-block mx-2 my-3">My projects list</h2>
+        </div>
+        <div class="col">
+            <div class="text-right m-3">
+                <a class="btn btn-success" href="{% url 'project_create' %}" role="button">Add
+                    project</a>
+            </div>
+        </div>
+    </div>
+
+    {% if object_list %}
+        <div class="list-group-item bg-transparent border-0 my-1 text-light">
+
+            <div class="row">
+                <div class="col">
+                    <p class="m-0">Name</p>
+                </div>
+                <div class="col">
+                    <p class="m-0">Code</p>
+                </div>
+                <div class="col">
+                    <p class="m-0">Number of Tasks</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <ul class="list-group">
         {% for project in object_list %}
-            <a href="{% url 'project_detail' project.pk %}" class="list-group-item list-group-item-action bg-success">
-                {{ project.name }}
+            <a href="{% url 'project_detail' project.pk %}"
+               class="list-group-item list-group-item-action bg-success my-1 text-light">
+
+                <div class="row">
+                    <div class="col">
+                        <p class="m-0">{{ project.name }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="m-0">{{ project.code }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="m-0">{{ project.task_counter }}</p>
+                    </div>
+                </div>
+
             </a>
         {% empty %}
-            <li>No projects  yet.</li>
+            <p>No projects yet.</p>
         {% endfor %}
 
     </ul>

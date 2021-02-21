@@ -5,27 +5,40 @@
 {% block content %}
 
     {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Your username and password didn't match. Please try again.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <p></p>
     {% endif %}
 
     {% if next %}
         {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
+            <p class="alert-danger">Your account doesn't have access to this page. To proceed,
                 please login with an account that has access.</p>
         {% else %}
-            <p>Please login to see this page.</p>
+            <p class="alert-danger p-2">Please login to see this page.</p>
         {% endif %}
     {% endif %}
 
-    <form method="post" action="{% url 'login' %}"> {% csrf_token %}
-        <div class="form-group">
-            <input type="text" class="form-control" name="username"
-                   aria-describedby="emailHelp" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" name="password">
-        </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
+    <div class="row pt-5">
+        <div class="col-sm-4 ml-auto mr-auto text-center">
+        <p>Welcome! Please login:</p>
+        <form method="post" action="{% url 'login' %}"> {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control" name="username"
+                       aria-describedby="emailHelp" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" name="password">
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+    </div>
+
+
 
 {% endblock %}

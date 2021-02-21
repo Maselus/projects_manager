@@ -19,11 +19,22 @@
 <body>
 
 <header>
-    <h1 class="logo d-none d-md-block">Projects and Tasks</h1>
+    <div class="row">
+        <div class="col">
+            <p class="h1 m-1">Projects and Tasks</p>
+        </div>
+        {% block user_panel %}
+        <div class="col">
+            <div class="text-right ml-3 my-3">
+                Hello {{ user }}!
+                <a class="btn btn-outline-success mx-3" href="{% url 'logout' %}">logout</a>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
 
-    <a href="{% url 'logout' %}">logout</a>
     {% block navbar %}
-        <nav class="navbar navbar-light bg-success navbar-expand-md">
+        <nav class="navbar navbar-light bg-success navbar-expand-md px-0 mx-0">
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#mainmenu">
                 <span class="navbar-toggler-icon"></span>
@@ -39,7 +50,7 @@
                             <a class="nav-link" href="{% url 'task_list' %}">Tasks</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Calendar</a>
+                            <a class="nav-link" href="{% url 'calendar'%}">Calendar</a>
                         </li>
                     {% endblock %}
                 </ul>

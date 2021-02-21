@@ -1,15 +1,45 @@
 {% extends "project/project_base.html" %}
 
 {% block content %}
+    <dl class="row my-3">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">{{ object.name }}</dd>
 
-    <p class="lead">
-        name: {{ object.name }}
-        <br>
-        description: {{ object.description }}
-    </p>
+        <dt class="col-sm-3">Code</dt>
+        <dd class="col-sm-9">{{ object.code }}</dd>
 
-    <a class="btn btn-success" href="{% url 'project_update' pk=object.id %}" role="button">Edit</a>
-    <form method="post" action="{% url 'project_delete' object.id %}"> {% csrf_token %}
-        <input type="submit" value="Delete" class="btn btn-success">
-    </form>
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">{{ object.description }}</dd>
+    </dl>
+
+
+    <div class="my-3">
+        <a class="btn btn-success mr-2 px-3" href="{% url 'project_update' pk=object.id %}"
+           role="button">Edit</a>
+        <button type="button" class="btn btn-danger mx-2" data-toggle="modal"
+                data-target="#deleteModal">
+            Delete
+        </button>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-dark">
+                    Are you sure you want to delete project {{ object }}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel
+                    </button>
+                    <form class="form-check-inline" method="post"
+                          action="{% url 'project_delete' object.id %}"> {% csrf_token %}
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

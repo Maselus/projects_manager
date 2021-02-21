@@ -1,9 +1,16 @@
+import calendar
+from datetime import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
+from django.utils.safestring import mark_safe
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, DeleteView, \
     UpdateView
+from django_filters.views import FilterView
 
-from projects_and_tasks.forms import ProjectCreateForm
+from projects_and_tasks.calendar import Calendar
+from projects_and_tasks.filters import TaskFilter
+from projects_and_tasks.forms import ProjectForm, TaskForm
 from projects_and_tasks.models import Project, Task, UserProfile
 
 
@@ -26,7 +33,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
-    form_class = ProjectCreateForm
+    form_class = ProjectForm
     template_name = 'project/project_create.html'
 
     def get_success_url(self):
@@ -39,7 +46,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
-    fields = ['name', 'description', 'code']
+    form_class = ProjectForm
     template_name = 'project/project_update.html'
 
     def get_success_url(self):
@@ -52,8 +59,11 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
 
 
 # Task views
-class TaskListView(LoginRequiredMixin, ListView):
+class TaskListView(LoginRequiredMixin, FilterView):
+    model = Task
+    context_object_name = 'task_list'
     template_name = 'task/task_list.html'
+    filterset_class = TaskFilter
 
     def get_queryset(self):
         return Task.objects.filter(project__owner__user=self.request.user).all()
@@ -66,7 +76,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['name', 'description', 'project', 'deadline']
+    form_class = TaskForm
     template_name = 'task/task_create.html'
 
     def get_success_url(self):
@@ -74,8 +84,8 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = TaskForm
     model = Task
-    fields = ['name', 'description', 'deadline', 'status']
     template_name = 'task/task_update.html'
 
     def get_success_url(self):
@@ -86,3 +96,22 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     success_url = reverse_lazy('task_list')
 
+
+# Calendar View
+class CalendarView(LoginRequiredMixin, ListView):
+    template_name = 'deadlines_calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = datetime.today()
+        cal = Calendar(d.year, d.month)
+        context['month'] = d.month
+        context['year'] = d.year
+        html_cal = cal.format_month(with_year=True)
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = 1
+        context['next_month'] = 3
+        return context
+
+    def get_queryset(self):
+        return Task.objects.filter(project__owner__user=self.request.user).all()

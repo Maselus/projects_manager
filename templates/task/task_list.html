@@ -1,14 +1,77 @@
 {% extends "task/task_base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
-    <a class="btn btn-success" href="{% url 'task_create' %}" role="button">Add task</a>
+
+    <div class="row">
+        <div class="col">
+            <h2 class="logo d-none d-md-block mx-2 my-3">My tasks list</h2>
+        </div>
+        <div class="col">
+            <div class="text-right m-3">
+                <a class="btn btn-success" href="{% url 'task_create' %}" role="button">Add
+                    new task</a>
+            </div>
+        </div>
+    </div>
+
+    <p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseFilter" role="button"
+           aria-expanded="false" aria-controls="collapseExample">
+            Filters
+        </a>
+    </p>
+    <div class="collapse w-50 bg-success" id="collapseFilter">
+        <div class="card card-body bg-success">
+            <form method="get">
+                {% crispy filter.form %}
+                <input type="submit"/>
+            </form>
+        </div>
+    </div>
+
+    {% if object_list %}
+        <div class="list-group-item bg-transparent border-0 my-1 text-light">
+            <div class="row">
+                <div class="col">
+                    <p class="m-0">Code</p>
+                </div>
+                <div class="col">
+                    <p class="m-0">Name</p>
+                </div>
+                <div class="col">
+                    <p class="m-0">Project</p>
+                </div>
+                <div class="col">
+                    <p class="m-0">Status</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <ul class="list-group">
-        {% for task in object_list %}
-            <a href="{% url 'task_detail' task.pk %}" class="list-group-item list-group-item-action bg-success">
-                {{ task }} <b>{{ task.name }}</b>
+        {% for task in filter.qs %}
+            <a href="{% url 'task_detail' task.pk %}"
+               class="list-group-item list-group-item-action bg-success my-1 text-light">
+
+                <div class="row">
+                    <div class="col">
+                        <p class="m-0">{{ task }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="m-0">{{ task.name }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="m-0">{{ task.project }}</p>
+                    </div>
+                    <div class="col">
+                        <p class="m-0">{{ task.status.label }}</p>
+                    </div>
+                </div>
             </a>
         {% empty %}
-            <li>No projects yet.</li>
+            <p>No tasks yet.</p>
         {% endfor %}
 
     </ul>

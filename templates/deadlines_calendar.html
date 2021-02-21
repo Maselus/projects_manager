@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <h1>Calendar</h1>
+
+    {{ month }} , {{ year }}
+
+    <a href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+
+    {{ calendar }}
+
+{% endblock %}

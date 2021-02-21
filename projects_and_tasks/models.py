@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.transaction import atomic
+from django.urls import reverse
 from django_enumfield import enum
 
 from projects_and_tasks.enums import TaskStatus
@@ -39,4 +40,9 @@ class Task(models.Model):
             project.task_counter += 1
             project.save()
         super().save(*args, **kwargs)
+
+    @property
+    def get_html_url(self):
+        url = reverse('task_detail', args=(self.id,))
+        return f'<a href=\'{url}\' class=\"btn btn-success btn-sm m-1 text-light\">{self.__str__()}</a>'
 
