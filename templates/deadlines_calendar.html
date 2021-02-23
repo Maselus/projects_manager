@@ -3,11 +3,17 @@
 {% block content %}
     <h1>Calendar</h1>
 
-    {{ month }} , {{ year }}
+    <div class="row">
+        <div class="col text-md-right">
+            <a class="btn btn-success my-2" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+        </div>
+        <div class="col">
+            <a class="btn btn-success my-2" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+        </div>
+    </div>
 
-    <a href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
-    <a href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+
 
     {{ calendar }}
-
+    <p class="my-2"></p>
 {% endblock %}
