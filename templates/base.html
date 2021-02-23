@@ -1,4 +1,9 @@
 {% load static %}
+
+{% now "Y" as year %}
+{% now "n" as month %}
+{% url 'calendar' year month as calendar_now%}
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -50,7 +55,7 @@
                             <a class="nav-link" href="{% url 'task_list' %}">Tasks</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'calendar'%}">Calendar</a>
+                            <a class="nav-link" href="{{ calendar_now }}">Calendar</a>
                         </li>
                     {% endblock %}
                 </ul>

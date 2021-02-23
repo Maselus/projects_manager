@@ -1,5 +1,5 @@
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -30,6 +30,9 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
     template_name = 'project/project_detail.html'
 
+    def get_queryset(self):
+        return Project.objects.filter(owner__user=self.request.user).all()
+
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
@@ -52,10 +55,16 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('project_detail', args=[self.object.id])
 
+    def get_queryset(self):
+        return Project.objects.filter(owner__user=self.request.user).all()
+
 
 class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     success_url = reverse_lazy('project_list')
+
+    def get_queryset(self):
+        return Project.objects.filter(owner__user=self.request.user).all()
 
 
 # Task views
@@ -72,6 +81,9 @@ class TaskListView(LoginRequiredMixin, FilterView):
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'task/task_detail.html'
+
+    def get_queryset(self):
+        return Task.objects.filter(project__owner__user=self.request.user).all()
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -91,10 +103,16 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('task_detail', args=[self.object.id])
 
+    def get_queryset(self):
+        return Task.objects.filter(project__owner__user=self.request.user).all()
+
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     success_url = reverse_lazy('task_list')
+
+    def get_queryset(self):
+        return Task.objects.filter(project__owner__user=self.request.user).all()
 
 
 # Calendar View
@@ -103,14 +121,22 @@ class CalendarView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        d = datetime.today()
-        cal = Calendar(d.year, d.month)
-        context['month'] = d.month
-        context['year'] = d.year
+        cal = Calendar(
+            user=self.request.user,
+            year=context['view'].kwargs['year'],
+            month=context['view'].kwargs['month']
+        )
+
         html_cal = cal.format_month(with_year=True)
         context['calendar'] = mark_safe(html_cal)
-        context['prev_month'] = 1
-        context['next_month'] = 3
+        this_date = datetime(year=context['view'].kwargs['year'], month=context['view'].kwargs['month'], day=1)
+        next_date = (this_date + timedelta(days=32)).replace(day=1)
+        prev_date = (this_date - timedelta(days=1)).replace(day=1)
+        context['next_year'] = next_date.year
+        context['prev_year'] = prev_date.year
+        context['next_month'] = next_date.month
+        context['prev_month'] = prev_date.month
+
         return context
 
     def get_queryset(self):

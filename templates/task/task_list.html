@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col">
-            <h2 class="logo d-none d-md-block mx-2 my-3">My tasks list</h2>
+            <h2 class="mx-2 my-3">My tasks list</h2>
         </div>
         <div class="col">
             <div class="text-right m-3">
@@ -25,7 +25,7 @@
     <div class="collapse w-50 bg-success" id="collapseFilter">
         <div class="card card-body bg-success">
             <form method="get">
-                {% crispy filter.form %}
+                {{ filter.form|crispy  }}
                 <input type="submit"/>
             </form>
         </div>
@@ -34,17 +34,17 @@
     {% if object_list %}
         <div class="list-group-item bg-transparent border-0 my-1 text-light">
             <div class="row">
-                <div class="col">
-                    <p class="m-0">Code</p>
+                <div class="col m-0">
+                    Code
                 </div>
-                <div class="col">
-                    <p class="m-0">Name</p>
+                <div class="col d-none d-md-block m-0">
+                    Name
                 </div>
-                <div class="col">
-                    <p class="m-0">Project</p>
+                <div class="col m-0">
+                    Project
                 </div>
-                <div class="col">
-                    <p class="m-0">Status</p>
+                <div class="col m-0">
+                    Status
                 </div>
             </div>
         </div>
@@ -56,16 +56,16 @@
                class="list-group-item list-group-item-action bg-success my-1 text-light">
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col m-0">
                         <p class="m-0">{{ task }}</p>
                     </div>
-                    <div class="col">
+                    <div class="col m-0 d-none d-md-block">
                         <p class="m-0">{{ task.name }}</p>
                     </div>
-                    <div class="col">
+                    <div class="col m-0">
                         <p class="m-0">{{ task.project }}</p>
                     </div>
-                    <div class="col">
+                    <div class="col m-0">
                         <p class="m-0">{{ task.status.label }}</p>
                     </div>
                 </div>

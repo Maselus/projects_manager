@@ -22,5 +22,5 @@ urlpatterns = [
     path('tasks/delete/<int:pk>/', TaskDeleteView.as_view(), name='task_delete'),
 
     # calendar
-    path('calendar/', CalendarView.as_view(), name='calendar'),
+    path('calendar/<int:year>/<int:month>', CalendarView.as_view(), name='calendar'),
 ]

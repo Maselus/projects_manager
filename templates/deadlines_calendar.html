@@ -1,19 +1,32 @@
 {% extends 'base.html' %}
 
+{% block navbar_items %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'project_list' %}">Projects</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'task_list' %}">Tasks</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ calendar_now }}">Calendar</a>
+    </li>
+{% endblock %}
+
 {% block content %}
     <h1>Calendar</h1>
 
     <div class="row">
         <div class="col text-md-right">
-            <a class="btn btn-success my-2" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+            <a class="btn btn-success my-2" href="{% url 'calendar' prev_year prev_month %}"> Prev Month </a>
         </div>
         <div class="col">
-            <a class="btn btn-success my-2" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+            <a class="btn btn-success my-2" href="{% url 'calendar' next_year next_month %}"> Next Month </a>
         </div>
     </div>
 
+    <div class="table-responsive-md">
+        {{ calendar }}
+    </div>
 
-
-    {{ calendar }}
     <p class="my-2"></p>
 {% endblock %}
